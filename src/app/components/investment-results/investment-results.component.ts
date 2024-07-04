@@ -1,6 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { InvestmentResult } from '@app/interfaces/investment-result.interface';
+import { Component, computed, inject } from '@angular/core';
 import { InvestmentService } from '@app/services/investment.service';
 
 @Component({
@@ -13,7 +12,9 @@ import { InvestmentService } from '@app/services/investment.service';
 export class InvestmentResultsComponent {
   private investmentService = inject(InvestmentService);
 
-  get results() {
-    return this.investmentService.resultsData;
-  }
+  // 'computed' returns a new signal that will update whenever the signals it depends on change
+  // and is READONLY value, not like the signals it depends on
+  results = computed(() => {
+    return this.investmentService.resultsData();
+  });
 }
