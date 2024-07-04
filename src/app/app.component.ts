@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { HeaderComponent } from '@components/header/header.component';
 import { UserInputComponent } from '@components/user-input/user-input.component';
 import { InvestmentResultsComponent } from '@components/investment-results/investment-results.component';
@@ -13,11 +13,12 @@ import { InvestmentResultsService } from '@services/investment-results.service';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  resultsData?: InvestmentResult[];
+  resultsData = signal<InvestmentResult[] | undefined>(undefined);
   private investmentResultsService = inject(InvestmentResultsService);
 
   onCalculateInvestmentResults(data: InvestmentInput): void {
-    this.resultsData =
-      this.investmentResultsService.calculateInvestmentResults(data);
+    this.resultsData.set(
+      this.investmentResultsService.calculateInvestmentResults(data)
+    );
   }
 }
